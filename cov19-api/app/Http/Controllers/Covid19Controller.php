@@ -4,25 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\ApiParams;
 use Illuminate\Support\Facades\Config;
-
+use Illuminate\Support\Facades\Http;
 class Covid19Controller extends Controller
 {
     //
     public function cases()
     {
-
         $apiParams = new ApiParams();
 
         $apiParams->FiltersType = array(["nation", "Northern Ireland"]);
         $apiParams->StructureType = array(["newCases", "newCasesByPublishDate"]);
         $apiParams->LatestBy = "newCasesByPublishDate";
 
+        $url = $this->BuildUrl($apiParams, 1);
 
+        $response = Http::get($url);
 
-        $url = $this->BuildUrl($apiParams);
-
-
-        return $url;
+        return  $response->json("data");
     }
 
     /**
@@ -30,15 +28,15 @@ class Covid19Controller extends Controller
      * @param ApiParams $apiParams
      * @return string
      */
-    public function BuildUrl(apiParams $apiParams): string
+    public function BuildUrl(apiParams $apiParams, mixed $page): string
     {   $baseUrl = Config::get('app.apiBaseUrl');
         $url = $baseUrl . '?filters=areaType='
             . $apiParams->FiltersType[0][0] . ';'
             . 'areaName='
             . $apiParams->FiltersType[0][1]
             . "&structure="
-            . json_encode((object)$apiParams->StructureType[0], JSON_PRETTY_PRINT) .
-            "&latestBy=" . $apiParams->LatestBy . "&page=1" . "&format=json";
+            . "{\"MyDate\":\"date\",\"newCases\":\"newCasesByPublishDate\"}" .
+            "&latestBy=" . $apiParams->LatestBy . "&page=" . $page . "&format=json";
         return $url;
     }
 }
