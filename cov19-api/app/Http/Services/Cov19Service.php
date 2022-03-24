@@ -10,7 +10,7 @@ class Cov19Service
 {
     public function GetMetrics(Request $request)
     {
-        echo $request;
+
         $areaType = $request->get("areaType");
         $areaName = $request->get("areaName");
         $metric = $request->get("metric");
@@ -25,7 +25,7 @@ class Cov19Service
 
         $response = Http::get($url);
 
-        return $response->json("data");
+        return $response->json("data")[0];
 
     }
 }
