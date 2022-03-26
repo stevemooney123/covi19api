@@ -17,8 +17,7 @@ class Cov19Service
 
     public function GetLast7Days(Request $request)
     {
-
-        return array_slice($this->extracted($request), 0, 7);
+        return array_sum(array_column(array_slice($this->extracted($request), 0, 7),'newCases'));
 
     }
 
