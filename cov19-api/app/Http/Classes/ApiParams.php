@@ -39,7 +39,7 @@ class ApiParams
             . 'areaName='
             . $apiParams->FiltersType[0][1]
             . "&structure="
-            . "{\"MyDate\":\"date\",\"newCases\":\"newCasesByPublishDate\"}" .
+            . "{\"date\":\"date\",\"newCases\":\"newCasesByPublishDate\",\"cumulativeCases\":\"cumCasesByPublishDate\",\"dailyDeaths\":\"newDeaths28DaysByPublishDate\",\"cumulativeDeaths\":\"cumDeaths28DaysByPublishDate\"}" .
             "&latestBy=" . $apiParams->LatestBy . "&page=" . $page . "&format=json";
     }
 }

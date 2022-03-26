@@ -25,7 +25,7 @@ class Cov19Service
 
         $response = Http::get($url);
 
-        return $response->json("data")[0];
+        return $response->json("data");
 
     }
 }
