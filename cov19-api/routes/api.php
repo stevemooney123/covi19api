@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("/covid", [Covid19Controller::class, 'Data']);
+Route::get("/all", [Covid19Controller::class, 'GetAllMetrics']);
+Route::get("/last7", [Covid19Controller::class, 'GetLast7Days']);

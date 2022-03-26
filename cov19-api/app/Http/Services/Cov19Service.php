@@ -11,6 +11,23 @@ class Cov19Service
     public function GetMetrics(Request $request)
     {
 
+        return $this->extracted($request);
+
+    }
+
+    public function GetLast7Days(Request $request)
+    {
+
+        return array_slice($this->extracted($request), 0, 7);
+
+    }
+
+    /**
+     * @param Request $request
+     * @return array|mixed
+     */
+    public function extracted(Request $request): mixed
+    {
         $areaType = $request->get("areaType");
         $areaName = $request->get("areaName");
         $metric = $request->get("metric");
@@ -26,6 +43,5 @@ class Cov19Service
         $response = Http::get($url);
 
         return $response->json("data");
-
     }
 }
