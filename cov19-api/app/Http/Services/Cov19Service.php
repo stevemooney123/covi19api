@@ -5,7 +5,8 @@ namespace App\Http\Services;
 use App\Http\Classes\ApiParams;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-
+use stdClass;
+use \YaLinqo\Enumerable;
 class Cov19Service
 {
     public function GetMetrics(Request $request)
@@ -17,7 +18,19 @@ class Cov19Service
 
     public function GetLast7Days(Request $request)
     {
-        return array_sum(array_column(array_slice($this->extracted($request), 0, 7),'newCases'));
+        $object = new stdClass();
+
+        $days = $request->get("days");
+
+        $casesLast7Days = from($this->extracted($request))->select(function($np){ return $np['newCases']; })->take(7)->sum($request['newCases']);
+        $dailyCases = from($this->extracted($request))->select(function($np){ return $np['dailyDeaths']; })->take(1)->sum($request['dailyDeaths']);
+        $totalCases = from($this->extracted($request))->select(function($np){ return $np['cumulativeCases']; })->take(1)->sum($request['cumulativeCases']);
+        $object->casesLast7Days =$casesLast7Days;
+        $object->dailyCases =$dailyCases;
+        $object->totalCases =$totalCases;
+
+
+        return $object;
 
     }
 
