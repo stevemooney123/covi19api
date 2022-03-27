@@ -22,12 +22,16 @@ class Cov19Service
 
         $days = $request->get("days");
 
-        $casesLast7Days = from($this->extracted($request))->select(function($np){ return $np['newCases']; })->take(7)->sum($request['newCases']);
+        $casesLast7Days = from($this->extracted($request))->select(function($np){ return $np['newCases']; })->take($days)->sum($request['newCases']);
         $dailyCases = from($this->extracted($request))->select(function($np){ return $np['dailyDeaths']; })->take(1)->sum($request['dailyDeaths']);
         $totalCases = from($this->extracted($request))->select(function($np){ return $np['cumulativeCases']; })->take(1)->sum($request['cumulativeCases']);
-        $object->casesLast7Days =$casesLast7Days;
-        $object->dailyCases =$dailyCases;
-        $object->totalCases =$totalCases;
+
+        $casesLast7DaysName = "Cases last 7 days";
+        $dailyCasesName = "Daily Cases";
+        $totalCasesName = "Total Cases";
+        $object->$casesLast7DaysName =$casesLast7Days;
+        $object->$dailyCasesName =$dailyCases;
+        $object->$totalCasesName =$totalCases;
 
 
         return $object;
