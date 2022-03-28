@@ -21,7 +21,8 @@ class Cov19Service
     {
         $stack = array();
 
-        $object = new stdClass();
+        $object1 = new stdClass();
+        $object2 = new stdClass();
 
         $days = $request->get("days");
 
@@ -39,9 +40,9 @@ class Cov19Service
         $dailyCasesName = "Daily Cases";
         $totalCasesName = "Total Cases";
 
-        $object->$dailyCasesName = $dailyCases;
-        $object->$casesLast7DaysName = $casesLast7Days;
-        $object->$totalCasesName = $totalCases;
+        $object1->$dailyCasesName = $dailyCases;
+        $object1->$casesLast7DaysName = $casesLast7Days;
+        $object1->$totalCasesName = $totalCases;
 
 
         $deathsLast7Days = from($this->extracted($request))->select(function ($np) {
@@ -58,12 +59,14 @@ class Cov19Service
         $dailyDeathsName = "Daily Deaths";
         $totalDeathsName = "Total Deaths";
 
-        $object->$deathsLast7DaysName = $deathsLast7Days;
-        $object->$dailyDeathsName = $deathCases;
-        $object->$totalDeathsName = $totalDeaths;
+        $object2->$deathsLast7DaysName = $deathsLast7Days;
+        $object2->$dailyDeathsName = $deathCases;
+        $object2->$totalDeathsName = $totalDeaths;
 
+        $arr['Cases'] =array($object1);
+        $arr1['Deaths'] = array($object2);
 
-        return $object;
+        return array_merge($arr, $arr1);
 
     }
 
